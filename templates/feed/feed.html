@@ -8,27 +8,24 @@
 
 {% block content %}
 
-
-
     <div class="container">
         {% if user.profile.status == 'TR' %}
             <h1>Teacher Account</h1>
-
-                {% for class in class_list %}
-                    <a href="{% url 'class' class.pk %}">
-                        <div class="card" style="margin-bottom: 50px;">
-
-                            <div class="card-body">
-                               {{ class }}
-                            </div>
-                        </div>
-                    </a>
-                {% endfor %}
-
         {% elif user.profile.status %}
             <h1>Student Account</h1>
         {% endif %}
+
+         {% for class in class_list %}
+             <a href="{% url 'class' class.pk %}">
+                <div class="card class-card" style="margin-bottom: 50px;">
+                    <div class="card-body">
+                        {{ class }}
+                    </div>
+                </div>
+             </a>
+         {% endfor %}
     </div>
+
 
 
 {% endblock content %}

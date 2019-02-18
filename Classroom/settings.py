@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Feed',
     'School',
     'widget_tweaks',
+    'materialdjango',
 ]
 
 MIDDLEWARE = [

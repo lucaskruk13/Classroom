@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
 from django.contrib.auth.models import User
+from School.models import Class, School
+
 # Create your tests here.
 class FeedTest(TestCase):
 
@@ -16,12 +18,12 @@ class FeedTest(TestCase):
         self.feedResponse = self.client.get(self.feed_url)
         self.feedView = resolve('/')
 
-
 class FeedViewTest(FeedTest):
 
     def test_can_get_feed(self):
         self.assertEqual(self.feedResponse.status_code, 200)
 
+    # With No Status, test it redirects
 
 class AuthenticatedFeedTest(FeedTest):
 
@@ -40,11 +42,40 @@ class AuthenticatedFeedTest(FeedTest):
 
         cls.user.save()
 
+
+
     def setUp(self):
         # Log the User In
         self.client.login(username=self.username, password=self.password)
 
         super().setUp()
+
+class AuthenticatedStudentTest(AuthenticatedFeedTest):
+    def setUp(self):
+        self.user.profile.status = 'SR'
+        self.user.save()
+        super().setUp()
+
+    def test_is_student(self):
+        self.assertEqual(self.user.profile.status, 'SR')
+
+    def test_feed_is_student_view(self):
+
+        self.assertContains(self.feedResponse, 'Student')
+
+class AuthenticatedTeacherTest(AuthenticatedFeedTest):
+
+    def setUp(self):
+        self.user.profile.status = 'TR'
+        self.user.save()
+        super().setUp()
+
+    def test_is_teacher(self):
+        self.assertEqual(self.user.profile.status, 'TR')
+
+    def test_feed_is_teacher_view(self):
+        self.feedResponse = self.client.get(self.feed_url)
+        self.assertContains(self.feedResponse, 'Teacher')
 
 class TestFeedPageUserLoggedIn(AuthenticatedFeedTest):
 
@@ -54,3 +85,33 @@ class TestFeedPageUserLoggedIn(AuthenticatedFeedTest):
 
     def test_user_is_logged_in(self):
         self.assertTrue(self.user.is_authenticated)
+
+class TestFeedClassesForTeacher(AuthenticatedTeacherTest):
+    def setUp(self):
+
+        school = School.objects.create(name='Pisgah', location='Canton, NC', mascot='Bears')
+        class1 = Class.objects.create(school=school, name='Gym', subject='PE', start_time='06:00:00')
+        class2 = Class.objects.create(school=school, name='Science', subject='Science', start_time='07:00:00')
+
+        class1.profiles.add(self.user.profile)
+        class2.profiles.add(self.user.profile)
+
+        super().setUp()
+
+    def test_feed_has_2_classes(self):
+        self.assertContains(self.feedResponse, 'class-card', 2)
+
+class TestFeedClassesForStudent(AuthenticatedStudentTest):
+    def setUp(self):
+
+        school = School.objects.create(name='Pisgah', location='Canton, NC', mascot='Bears')
+        class1 = Class.objects.create(school=school, name='Gym', subject='PE', start_time='06:00:00')
+        class2 = Class.objects.create(school=school, name='Science', subject='Science', start_time='07:00:00')
+
+        class1.profiles.add(self.user.profile)
+        class2.profiles.add(self.user.profile)
+
+        super().setUp()
+
+    def test_feed_has_2_classes(self):
+        self.assertContains(self.feedResponse, 'class-card', 2)
