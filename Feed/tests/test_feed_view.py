@@ -89,17 +89,23 @@ class TestFeedPageUserLoggedIn(AuthenticatedFeedTest):
 class TestFeedClassesForTeacher(AuthenticatedTeacherTest):
     def setUp(self):
 
-        school = School.objects.create(name='Pisgah', location='Canton, NC', mascot='Bears')
-        class1 = Class.objects.create(school=school, name='Gym', subject='PE', start_time='06:00:00')
-        class2 = Class.objects.create(school=school, name='Science', subject='Science', start_time='07:00:00')
+        self.school = School.objects.create(name='Pisgah', location='Canton, NC', mascot='Bears')
+        self.class1 = Class.objects.create(school=self.school, name='Gym', subject='PE', start_time='06:00:00')
+        self.class2 = Class.objects.create(school=self.school, name='Science', subject='Science', start_time='07:00:00')
 
-        class1.profiles.add(self.user.profile)
-        class2.profiles.add(self.user.profile)
+        self.class1.profiles.add(self.user.profile)
+        self.class2.profiles.add(self.user.profile)
 
         super().setUp()
 
     def test_feed_has_2_classes(self):
         self.assertContains(self.feedResponse, 'class-card', 2)
+
+    def test_link_to_classes(self):
+
+        self.assertContains(self.feedResponse, '<a href="%s">' % reverse('class',kwargs={"pk": self.class1.id}))
+        self.assertContains(self.feedResponse, '<a href="%s">' % reverse('class', kwargs={"pk": self.class2.id}))
+
 
 class TestFeedClassesForStudent(AuthenticatedStudentTest):
     def setUp(self):
