@@ -136,6 +136,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Login/Logout
-LOGOUT_REDIRECT_URL = 'feed'
+LOGOUT_REDIRECT_URL = 'login'
 LOGIN_REDIRECT_URL = 'feed'
 LOGIN_URL = 'login'
