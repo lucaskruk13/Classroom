@@ -1,0 +1,21 @@
+.session-container {
+
+}
+
+.card-deck, .card-group{
+    margin-bottom: 2rem;
+}
+
+.card-group{
+    width: 100%;
+}
+
+.show-more{
+    height: 10px;
+    background-color: red;
+}
+
+#session-cards{
+    background-color: red;
+    height: 10rem;
+}

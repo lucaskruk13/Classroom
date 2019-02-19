@@ -1,6 +1,7 @@
 from django.db import models
 from Account.models import Profile
 from django.utils.timezone import now
+from datetime import datetime as dt
 
 class School(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
@@ -21,3 +22,11 @@ class Class(models.Model):
     def __str__(self):
         return "{}: {}".format(self.start_time, self.name)
 
+class Session(models.Model):
+    associated_class = models.ForeignKey(Class, related_name='class_session', on_delete=models.CASCADE)
+    date = models.DateField(blank=False, null=False, default=now)
+    absences = models.ManyToManyField(Profile, blank=True)
+    summary = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "{}, {}".format(self.date, self.summary)

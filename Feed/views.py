@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_list_or_404, redirect
 from django.views.generic import TemplateView
 from School.models import Class
-from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class FeedView(TemplateView):
+
+class FeedView(LoginRequiredMixin,TemplateView):
     template_name = 'feed/feed.html'
 
     def render_to_response(self, context, **response_kwargs):

@@ -1,7 +1,14 @@
 {% extends 'common/base.html' %}
 {% load static %}
+{% load humanize %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{% static 'css/class/class.css' %}" type="text/css">
+{% endblock stylesheets %}
+
 
 {% block content %}
+
     <div class="container-fluid">
 
         <div class="jumbotron text-center">
@@ -10,17 +17,83 @@
             <h3 class="display-6">{{ class.start_time }}</h3>
         </div>
 
-        <div class="card-deck">
-            {% for student in students %}
-                <div class="card">
-                    <img src="{% static 'img/default.png' %}" alt="Profile Picture" class="card-img-top">
-                    <div class="card-body">
-                        {{ student }}
-                    </div>
-                </div>
 
-            {% endfor %}
-        </div>
+        <table class="table table-bordered table-striped session-table">
+            <thead>
+                <tr>
+                    <td colspan="3" style="background-color: yellow; font-weight: bolder;" class="text-center">CLASSES</td>
+                </tr>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Absences</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for session in sessions %}
+                    <tr>
+                        <td>{{ session.date }}</td>
+                        <td>{{ session.summary }}</td>
+                        <td>{{ session.absences.count }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+            {% if sessions %}
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-center">Show More</td>
+                </tr>
+            </tfoot>
+            {% endif %}
+        </table>
+
+        <table class="table table-bordered table-striped student-table">
+
+            <thead>
+                <tr>
+                    <td colspan="2" class="text-center" style="background-color: yellow; font-weight: bolder;">STUDENTS</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>grade</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                    <td>{{ student }}</td>
+                    <td>{{ student.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
-{% endblock content %}
+
+
+    {% endblock content %}
+
+
+{#        <div class="card-group session-cards">#}
+{#            {% for session in sessions %}#}
+{#                <div class="card">#}
+{##}
+{#                    <div class="card-body">#}
+{#                        {{ session }}#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{##}
+{#        <div class="card-deck">#}
+{#            {% for student in students %}#}
+{#                <div class="card">#}
+{#                    <img src="{% static 'img/default.png' %}" alt="Profile Picture" class="card-img-top">#}
+{#                    <div class="card-body">#}
+{#                        {{ student }}#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{#    </div>#}
