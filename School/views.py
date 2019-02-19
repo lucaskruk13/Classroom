@@ -14,7 +14,7 @@ class ClassView(LoginRequiredMixin,TemplateView):
 
         thisclass = Class.objects.get(id=kwargs['pk'])
         students = thisclass.profiles.exclude(status='TR')
-        sessions = Session.objects.filter(associated_class=thisclass).order_by('-date')[:5]
+        sessions = Session.objects.filter(associated_class=thisclass).order_by('-date')[:10]
 
         context['class'] = thisclass
         context['students'] = students

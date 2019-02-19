@@ -1,0 +1,31 @@
+<table class="table table-bordered table-striped session-table">
+    <thead>
+        <tr>
+            <td colspan="3" style="background-color: yellow; font-weight: bolder;" class="text-center">CLASSES</td>
+        </tr>
+
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Absences</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for session in sessions %}
+            <tr>
+                <td>{{ session.date }}</td>
+                <td>{{ session.summary }}</td>
+                <td>{{ session.absences.count }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+
+    {% if sessions.count >= 10 and sessions %}
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-center">Show More</td>
+            </tr>
+        </tfoot>
+    {% endif %}
+</table>

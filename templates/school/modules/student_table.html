@@ -1,0 +1,21 @@
+<table class="table table-bordered table-striped student-table">
+    <thead>
+        <tr>
+            <td colspan="2" class="text-center" style="background-color: yellow; font-weight: bolder;">STUDENTS</td>
+        </tr>
+
+        <tr>
+            <td>Name</td>
+            <td>grade</td>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for student in students %}
+            <tr>
+                <td>{{ student }}</td>
+                <td>{{ student.status }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

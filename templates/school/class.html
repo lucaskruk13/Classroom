@@ -17,64 +17,40 @@
             <h3 class="display-6">{{ class.start_time }}</h3>
         </div>
 
+        <div class="container">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="class-tab" data-toggle="tab" href="#class" role="tab" aria-controls="class" aria-selected="true">Classes</a>
+                </li>
 
-        <table class="table table-bordered table-striped session-table">
-            <thead>
-                <tr>
-                    <td colspan="3" style="background-color: yellow; font-weight: bolder;" class="text-center">CLASSES</td>
-                </tr>
-                <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Subject</th>
-                    <th scope="col">Absences</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for session in sessions %}
-                    <tr>
-                        <td>{{ session.date }}</td>
-                        <td>{{ session.summary }}</td>
-                        <td>{{ session.absences.count }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
+                <li class="nav-item">
+                    <a class="nav-link" id="student-tab" data-toggle="tab" href="#student" role="tab" aria-controls="student" aria-selected="false">Students</a>
+                </li>
 
-            {% if sessions %}
-            <tfoot>
-                <tr>
-                    <td colspan="3" class="text-center">Show More</td>
-                </tr>
-            </tfoot>
-            {% endif %}
-        </table>
+                <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+                </li>
+            </ul>
 
-        <table class="table table-bordered table-striped student-table">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="class" role="tabpanel" aria-labelledby="class-tab">
+                    {% include 'school/modules/class_table.html' %}
+                </div>
 
-            <thead>
-                <tr>
-                    <td colspan="2" class="text-center" style="background-color: yellow; font-weight: bolder;">STUDENTS</td>
-                </tr>
-                <tr>
-                    <td>Name</td>
-                    <td>grade</td>
-                </tr>
-            </thead>
-            <tbody>
-                {% for student in students %}
-                    <tr>
-                    <td>{{ student }}</td>
-                    <td>{{ student.status }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                <div class="tab-pane fade" id="student" role="tabpanel" aria-labelledby="student-tab">
+                    {% include 'school/modules/student_table.html' %}
+                </div>
+
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                    Tab 3
+                </div>
+            </div>
+        </div>
     </div>
+{% endblock content %}
 
 
-
-    {% endblock content %}
-
-
+{#card view#}
 {#        <div class="card-group session-cards">#}
 {#            {% for session in sessions %}#}
 {#                <div class="card">#}
