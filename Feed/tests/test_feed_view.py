@@ -20,8 +20,9 @@ class FeedTest(TestCase):
 
 class FeedViewTest(FeedTest):
 
-    def test_can_get_feed(self):
-        self.assertEqual(self.feedResponse.status_code, 200)
+    def test_redirect_to_login(self):
+        # Since no user is authenticated, this needs to redriect to the login
+        self.assertRedirects(self.feedResponse, '/login/?next=/')
 
     # With No Status, test it redirects
 
